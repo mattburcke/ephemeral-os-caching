@@ -9,7 +9,7 @@ Deploy a Windows Server 2022 virtual machine with an ephemeral OS disk featuring
 # Clone and deploy
 git clone https://github.com/mattburcke/ephemeral-os-caching.git
 cd ephemeral-os-caching
-az deployment group create --resource-group <rg-name> --template-file vm-ephemeral.json --parameters @vm-ephemeral.parameters.json --parameters adminPassword="<StrongPasswordHere>"
+az deployment group create --resource-group <rg-name> --template-file vm-ephemeral.json --parameters vm-ephemeral.parameters.json --parameters adminPassword="<StrongPasswordHere>"
 ```
 
 **Option 2: PowerShell**
