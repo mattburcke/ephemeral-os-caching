@@ -1,6 +1,6 @@
 # Azure VM with Ephemeral OS Disk and Bastion Developer
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FYOUR-USERNAME%2FYOUR-REPO%2Fmain%2Fvm-ephemeral.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmattburcke%2Fephemeral-os-caching%2Fmain%2Fvm-ephemeral.json)
 
 Deploy a Windows Server 2022 virtual machine with an ephemeral OS disk featuring **full caching** (Public Preview) and Azure Bastion Developer SKU for secure, cost-optimized remote access.
 
