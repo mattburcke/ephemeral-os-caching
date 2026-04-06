@@ -115,7 +115,8 @@ New-AzResourceGroupDeployment -ResourceGroupName $resourceGroup -TemplateFile $t
 **Option 3: Deploy to Azure Button**
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmattburcke%2Fephemeral-os-caching%2Fmain%2Fvm-ephemeral.json)
 
-
+<br>
+<br>
 
 ## Connecting to Your VM
 
@@ -222,4 +223,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you encounter any issues or have questions:
 - Open an [Issue](https://github.com/mattburcke/ephemeral-os-caching/issues)
-- Check existing [Discussions](https://github.com/mattburcke/ephemeral-os-caching/discussions)
