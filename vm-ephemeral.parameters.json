@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmName": {
+      "value": "vm-ephemeral"
+    },
+    "adminUsername": {
+      "value": "azureadmin"
+    },
+    "adminPassword": {
+      "value": ""
+    },
+    "location": {
+      "value": "canadacentral"
+    },
+    "vmSize": {
+      "value": "Standard_D8d_v5"
+    },
+    "diskCaching": {
+      "value": "ReadOnly"
+    }    
+  }
+}
