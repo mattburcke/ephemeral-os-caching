@@ -286,7 +286,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you encounter any issues or have questions:
 - Open an [Issue](https://github.com/YOUR-USERNAME/YOUR-REPO/issues)
 - Check existing [Discussions](https://github.com/YOUR-USERNAME/YOUR-REPO/discussions)
-
----
-
-**Note:** Remember to replace `YOUR-USERNAME` and `YOUR-REPO` in the Deploy to Azure button URL and support links with your actual GitHub username and repository name.
