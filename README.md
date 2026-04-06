@@ -1,8 +1,27 @@
 # Azure VM with Ephemeral OS Disk and Bastion Developer
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmattburcke%2Fephemeral-os-caching%2Fmain%2Fvm-ephemeral.json)
-
 Deploy a Windows Server 2022 virtual machine with an ephemeral OS disk featuring **full caching** (Public Preview) and Azure Bastion Developer SKU for secure, cost-optimized remote access.
+
+### Quick Deployment
+
+**Option 1: Azure CLI** (Recommended)
+```bash
+# Clone and deploy
+git clone https://github.com/mattburcke/ephemeral-os-caching.git
+cd ephemeral-os-caching
+az deployment group create --resource-group <rg-name> --template-file vm-ephemeral.json --parameters vm-ephemeral.parameters.json
+```
+
+**Option 2: PowerShell**
+```powershell
+$templateFile = "vm-ephemeral.json"
+$parameterFile = "vm-ephemeral.parameters.json"
+$resourceGroup = "<rg-name>"
+New-AzResourceGroupDeployment -ResourceGroupName $resourceGroup -TemplateFile $templateFile -TemplateParameterFile $parameterFile
+```
+
+**Option 3: Deploy to Azure Button**
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmattburcke%2Fephemeral-os-caching%2Fmain%2Fvm-ephemeral.json)
 
 > 📢 **Latest:** This template leverages the new [Ephemeral OS Disk with Full Caching](https://techcommunity.microsoft.com/blog/AzureCompute/public-preview-ephemeral-os-disk-with-full-caching-for-vmvmss/4500191) feature announced March 30, 2026, providing **10X better IO performance** and sub-millisecond latency.
 
