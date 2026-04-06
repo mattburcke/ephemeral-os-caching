@@ -8,14 +8,11 @@
     "adminUsername": {
       "value": "azureadmin"
     },
-    "adminPassword": {
-      "value": ""
-    },
     "location": {
       "value": "canadacentral"
     },
     "vmSize": {
       "value": "Standard_D8d_v5"
     }
-    }    
+  }
 }

@@ -45,28 +45,6 @@
       "metadata": {
         "description": "The size of the Virtual Machine"
       }
-    },
-    "diskCaching": {
-      "type": "string",
-      "defaultValue": "ReadOnly",
-      "allowedValues": [
-        "ReadOnly",
-        "ReadWrite"
-      ],
-      "metadata": {
-        "description": "The OS disk caching type for ephemeral disk"
-      }
-    },
-    "diffDiskPlacement": {
-      "type": "string",
-      "defaultValue": "ResourceDisk",
-      "allowedValues": [
-        "CacheDisk",
-        "ResourceDisk"
-      ],
-      "metadata": {
-        "description": "The placement of ephemeral disk"
-      }
     }
   },
   "variables": {
@@ -169,19 +147,16 @@
           },
           "osDisk": {
             "name": "[format('{0}-osdisk', parameters('vmName'))]",
-            "caching": "[parameters('diskCaching')]",
+            "caching": "ReadOnly",
             "createOption": "FromImage",
             "diffDiskSettings": {
               "option": "Local",
-              "placement": "[parameters('diffDiskPlacement')]",
+              "placement": "ResourceDisk",
               "enableFullCaching": true
             },
-            "caching": "ReadOnly", 
-            "createOption": "FromImage", 
-            "managedDisk": 
-              { 
-              "storageAccountType": "StandardSSD_LRS" 
-                } 
+            "managedDisk": {
+              "storageAccountType": "StandardSSD_LRS"
+            }
           }
         },
         "networkProfile": {
