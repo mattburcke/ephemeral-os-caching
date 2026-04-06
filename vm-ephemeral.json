@@ -35,13 +35,12 @@
       "type": "string",
       "defaultValue": "Standard_D8d_v5",
       "allowedValues": [
-        "Standard_DS2_v2",
-        "Standard_DS3_v2",
-        "Standard_D2s_v3",
-        "Standard_D4s_v3",
-        "Standard_E2s_v3",
-        "Standard_E4s_v3",
-        "Standard_D8d_v5"
+        "Standard_D8d_v5",
+        "Standard_D16d_v5",
+        "Standard_D32d_v5",
+        "Standard_E8d_v5",
+        "Standard_E16d_v5",
+        "Standard_E32d_v5"
       ],
       "metadata": {
         "description": "The size of the Virtual Machine"
@@ -75,8 +74,7 @@
     "subnetName": "default",
     "nicName": "[format('{0}-nic', parameters('vmName'))]",
     "nsgName": "[format('{0}-nsg', parameters('vmName'))]",
-    "bastionName": "[format('{0}-bastion', parameters('vmName'))]",
-    "bastionPublicIPName": "[format('{0}-pip', variables('bastionName'))]"
+    "bastionName": "[format('{0}-bastion', parameters('vmName'))]"
   },
   "resources": [
     {
@@ -111,26 +109,8 @@
                 "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
               }
             }
-          },
-          {
-            "name": "AzureBastionSubnet",
-            "properties": {
-              "addressPrefix": "10.0.1.0/26"
-            }
           }
         ]
-      }
-    },
-    {
-      "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2023-09-01",
-      "name": "[variables('bastionPublicIPName')]",
-      "location": "[parameters('location')]",
-      "sku": {
-        "name": "Standard"
-      },
-      "properties": {
-        "publicIPAllocationMethod": "Static"
       }
     },
     {
@@ -195,7 +175,13 @@
               "option": "Local",
               "placement": "[parameters('diffDiskPlacement')]",
               "enableFullCaching": true
-            }
+            },
+            "caching": "ReadOnly", 
+            "createOption": "FromImage", 
+            "managedDisk": 
+              { 
+              "storageAccountType": "StandardSSD_LRS" 
+                } 
           }
         },
         "networkProfile": {
@@ -213,26 +199,15 @@
       "name": "[variables('bastionName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]",
-        "[resourceId('Microsoft.Network/publicIPAddresses', variables('bastionPublicIPName'))]"
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"
       ],
       "sku": {
-        "name": "Standard"
+        "name": "Developer"
       },
       "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "subnet": {
-                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), 'AzureBastionSubnet')]"
-              },
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('bastionPublicIPName'))]"
-              }
-            }
-          }
-        ]
+        "virtualNetwork": {
+          "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"
+        }
       }
     }
   ],
@@ -267,9 +242,9 @@
     },
     "connectCommand": {
       "type": "string",
-      "value": "[format('az network bastion ssh --name {0} --resource-group {1} --target-resource-id {2} --auth-type password --username {3}', variables('bastionName'), resourceGroup().name, resourceId('Microsoft.Compute/virtualMachines', parameters('vmName')), parameters('adminUsername'))]",
+      "value": "[format('https://portal.azure.com/#@/resource{0}/overview', resourceId('Microsoft.Network/bastionHosts', variables('bastionName')))]",
       "metadata": {
-        "description": "Connect to VM using Azure CLI"
+        "description": "Azure portal URL for the Bastion host"
       }
     }
   }

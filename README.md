@@ -9,7 +9,7 @@ Deploy a Windows Server 2022 virtual machine with an ephemeral OS disk featuring
 # Clone and deploy
 git clone https://github.com/mattburcke/ephemeral-os-caching.git
 cd ephemeral-os-caching
-az deployment group create --resource-group <rg-name> --template-file vm-ephemeral.json --parameters vm-ephemeral.parameters.json
+az deployment group create --resource-group <rg-name> --template-file vm-ephemeral.json --parameters @vm-ephemeral.parameters.json --parameters adminPassword="<StrongPasswordHere>"
 ```
 
 **Option 2: PowerShell**
@@ -31,7 +31,7 @@ New-AzResourceGroupDeployment -ResourceGroupName $resourceGroup -TemplateFile $t
 ✅ **10X Better IO Performance** - Sub-millisecond latency for OS disk operations  
 ✅ **Enhanced Resilience** - Zero dependency on remote storage for OS disk reads  
 ✅ **Asynchronous Caching** - No impact to VM creation times  
-✅ **Azure Bastion Standard SKU** - Secure RDP/SSH access without public IP exposure  
+✅ **Azure Bastion Developer SKU** - Secure RDP/SSH access without public IP exposure  
 ✅ **No Public IP on VM** - Enhanced security posture  
 ✅ **Flexible Placement** - Choose between CacheDisk or ResourceDisk for ephemeral storage  
 ✅ **ARM Template & Bicep** - Available in both formats
@@ -121,19 +121,24 @@ Traditionally, ephemeral OS disks store writes locally but still rely on remote 
 | `adminUsername` | string | *Required* | Administrator username for the VM |
 | `adminPassword` | securestring | *Required* | Administrator password (must meet complexity requirements) |
 | `location` | string | Resource Group location | Azure region for deployment |
-| `vmSize` | string | `Standard_DS2_v2` | VM size (must support ephemeral disks) |
-| `diskCaching` | string | `ReadWrite` | Caching type: `ReadOnly` or `ReadWrite` |
-| `diffDiskPlacement` | string | `CacheDisk` | Placement: `CacheDisk` or `ResourceDisk` |
+| `vmSize` | string | `Standard_D8d_v5` | VM size (must support ephemeral disks) |
+| `diskCaching` | string | `ReadOnly` | Caching type: `ReadOnly` or `ReadWrite` |
+| `diffDiskPlacement` | string | `ResourceDisk` | Placement: `CacheDisk` or `ResourceDisk` |
 
 > **Full Caching Note:** This template uses `enableFullCaching: true` for enhanced performance (requires API version 2025-04-01 or later).
 
 ### Supported VM Sizes
 
-- `Standard_DS2_v2`, `Standard_DS3_v2`
-- `Standard_D2s_v3`, `Standard_D4s_v3`
-- `Standard_E2s_v3`, `Standard_E4s_v3`
+- `Standard_D8d_v5`
+- `Standard_D16d_v5`
+- `Standard_D32d_v5`
+- `Standard_E8d_v5`
+- `Standard_E16d_v5`
+- `Standard_E32d_v5`
 
 > Ensure the VM size has sufficient cache or temp disk space for the OS disk.
+
+> Note: The current ARM template explicitly sets OS disk caching to `ReadOnly` in the VM resource definition.
 
 ## Deployment
 
@@ -153,7 +158,7 @@ az group create \
 az deployment group create \
   --resource-group rg-ephemeral-vm \
   --template-file vm-ephemeral.json \
-  --parameters vm-ephemeral.parameters.json \
+  --parameters @vm-ephemeral.parameters.json \
   --parameters adminPassword='YourSecurePassword123!'
 
 # Or deploy with inline parameters
@@ -163,7 +168,7 @@ az deployment group create \
   --parameters vmName='myvm' \
                adminUsername='azureadmin' \
                adminPassword='YourSecurePassword123!' \
-               vmSize='Standard_DS2_v2' \
+               vmSize='Standard_D8d_v5' \
                location='eastus'
 ```
 
@@ -270,7 +275,7 @@ Store important data on data disks, Azure Storage, or other persistent storage.
 ## Cost Optimization
 
 **Estimated monthly cost (East US):**
-- VM (Standard_DS2_v2): ~$70-100/month
+- VM (Standard_D8d_v5): check [Azure Pricing Calculator](https://azure.microsoft.com/pricing/calculator/) for current regional pricing
 - Bastion Developer SKU: ~$3.50/month
 - Virtual Network: Free
 - No storage costs for ephemeral OS disk ✅

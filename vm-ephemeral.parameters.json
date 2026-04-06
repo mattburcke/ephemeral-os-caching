@@ -16,9 +16,6 @@
     },
     "vmSize": {
       "value": "Standard_D8d_v5"
-    },
-    "diskCaching": {
-      "value": "ReadOnly"
+    }
     }    
-  }
 }
