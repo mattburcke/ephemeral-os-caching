@@ -2,29 +2,6 @@
 
 Deploy a Windows Server 2022 virtual machine with an ephemeral OS disk featuring **full caching** (Public Preview) and Azure Bastion Developer SKU for secure, cost-optimized remote access.
 
-### Quick Deployment
-
-**Option 1: Azure CLI** (Recommended)
-```bash
-# Clone and deploy
-git clone https://github.com/mattburcke/ephemeral-os-caching.git
-cd ephemeral-os-caching
-az deployment group create --resource-group <rg-name> --template-file vm-ephemeral.json --parameters vm-ephemeral.parameters.json --parameters adminPassword="<StrongPasswordHere>"
-```
-
-**Option 2: PowerShell**
-```powershell
-$templateFile = "vm-ephemeral.json"
-$parameterFile = "vm-ephemeral.parameters.json"
-$resourceGroup = "<rg-name>"
-New-AzResourceGroupDeployment -ResourceGroupName $resourceGroup -TemplateFile $templateFile -TemplateParameterFile $parameterFile
-```
-
-**Option 3: Deploy to Azure Button**
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmattburcke%2Fephemeral-os-caching%2Fmain%2Fvm-ephemeral.json)
-
-
-
 > 📢 **Latest:** This template leverages the new [Ephemeral OS Disk with Full Caching](https://techcommunity.microsoft.com/blog/AzureCompute/public-preview-ephemeral-os-disk-with-full-caching-for-vmvmss/4500191) feature announced March 30, 2026, providing **10X better IO performance** and sub-millisecond latency.
 
 ## Features
@@ -36,7 +13,7 @@ New-AzResourceGroupDeployment -ResourceGroupName $resourceGroup -TemplateFile $t
 ✅ **Azure Bastion Developer SKU** - Secure RDP/SSH access without public IP exposure  
 ✅ **No Public IP on VM** - Enhanced security posture  
 ✅ **Flexible Placement** - Choose between CacheDisk or ResourceDisk for ephemeral storage  
-✅ **ARM Template & Bicep** - Available in both formats
+
 
 ## Architecture
 
@@ -115,91 +92,34 @@ Traditionally, ephemeral OS disks store writes locally but still rely on remote 
 - Azure CLI 2.30+ or PowerShell Az module
 - Contributor access to the resource group or subscription
 
-## Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `vmName` | string | `vm-ephemeral` | Name of the virtual machine |
-| `adminUsername` | string | *Required* | Administrator username for the VM |
-| `adminPassword` | securestring | *Required* | Administrator password (must meet complexity requirements) |
-| `location` | string | Resource Group location | Azure region for deployment |
-| `vmSize` | string | `Standard_D8d_v5` | VM size (must support ephemeral disks) |
-| `diskCaching` | string | `ReadOnly` | Caching type: `ReadOnly` or `ReadWrite` |
-| `diffDiskPlacement` | string | `ResourceDisk` | Placement: `CacheDisk` or `ResourceDisk` |
 
-> **Full Caching Note:** This template uses `enableFullCaching: true` for enhanced performance (requires API version 2025-04-01 or later).
+### Quick Deployment
 
-### Supported VM Sizes
-
-- `Standard_D8d_v5`
-- `Standard_D16d_v5`
-- `Standard_D32d_v5`
-- `Standard_E8d_v5`
-- `Standard_E16d_v5`
-- `Standard_E32d_v5`
-
-> Ensure the VM size has sufficient cache or temp disk space for the OS disk.
-
-> Note: The current ARM template explicitly sets OS disk caching to `ReadOnly` in the VM resource definition.
-
-## Deployment
-
-### Option 1: Deploy to Azure Button
-
-Click the **Deploy to Azure** button at the top of this README. Update the URL with your GitHub username and repository name.
-
-### Option 2: Azure CLI
-
+**Option 1: Azure CLI** (Recommended)
 ```bash
-# Create resource group
-az group create \
-  --name rg-ephemeral-vm \
-  --location eastus
-
-# Deploy with parameters file
-az deployment group create \
-  --resource-group rg-ephemeral-vm \
-  --template-file vm-ephemeral.json \
-  --parameters @vm-ephemeral.parameters.json \
-  --parameters adminPassword='YourSecurePassword123!'
-
-# Or deploy with inline parameters
-az deployment group create \
-  --resource-group rg-ephemeral-vm \
-  --template-file vm-ephemeral.json \
-  --parameters vmName='myvm' \
-               adminUsername='azureadmin' \
-               adminPassword='YourSecurePassword123!' \
-               vmSize='Standard_D8d_v5' \
-               location='eastus'
+# Clone and deploy
+git clone https://github.com/mattburcke/ephemeral-os-caching.git
+cd ephemeral-os-caching
+az deployment group create --resource-group <rg-name> --template-file vm-ephemeral.json --parameters vm-ephemeral.parameters.json --parameters adminPassword="<StrongPasswordHere>"
 ```
 
-### Option 3: Azure PowerShell
-
+**Option 2: PowerShell**
 ```powershell
-# Create resource group
-New-AzResourceGroup -Name rg-ephemeral-vm -Location eastus
-
-# Deploy template
-New-AzResourceGroupDeployment `
-  -ResourceGroupName rg-ephemeral-vm `
-  -TemplateFile ./vm-ephemeral.json `
-  -TemplateParameterFile ./vm-ephemeral.parameters.json `
-  -adminPassword (ConvertTo-SecureString 'YourSecurePassword123!' -AsPlainText -Force)
+$templateFile = "vm-ephemeral.json"
+$parameterFile = "vm-ephemeral.parameters.json"
+$resourceGroup = "<rg-name>"
+New-AzResourceGroupDeployment -ResourceGroupName $resourceGroup -TemplateFile $templateFile -TemplateParameterFile $parameterFile
 ```
 
-### Option 4: Azure Portal
+**Option 3: Deploy to Azure Button**
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmattburcke%2Fephemeral-os-caching%2Fmain%2Fvm-ephemeral.json)
 
-1. Navigate to **Create a resource** > **Template deployment (deploy using custom templates)**
-2. Click **Build your own template in the editor**
-3. Copy and paste the contents of `vm-ephemeral.json`
-4. Click **Save**
-5. Fill in the required parameters
-6. Click **Review + create** > **Create**
+
 
 ## Connecting to Your VM
 
-### Azure CLI (Recommended)
+### Azure CLI
 
 ```bash
 # SSH/RDP tunnel through Bastion
@@ -218,15 +138,6 @@ The deployment outputs include a ready-to-use `connectCommand` with all values f
 3. Enter your username and password
 4. Click **Connect**
 
-## Outputs
-
-| Output | Description |
-|--------|-------------|
-| `adminUsername` | The administrator username |
-| `privateIPAddress` | Private IP address of the VM |
-| `vmId` | Resource ID of the virtual machine |
-| `bastionName` | Name of the Bastion host |
-| `connectCommand` | Azure CLI command to connect via Bastion |
 
 ## Important Considerations
 
@@ -310,5 +221,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 If you encounter any issues or have questions:
-- Open an [Issue](https://github.com/YOUR-USERNAME/YOUR-REPO/issues)
-- Check existing [Discussions](https://github.com/YOUR-USERNAME/YOUR-REPO/discussions)
+- Open an [Issue](https://github.com/mattburcke/ephemeral-os-caching/issues)
+- Check existing [Discussions](https://github.com/mattburcke/ephemeral-os-caching/discussions)
