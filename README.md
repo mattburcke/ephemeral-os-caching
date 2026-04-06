@@ -24,8 +24,6 @@ New-AzResourceGroupDeployment -ResourceGroupName $resourceGroup -TemplateFile $t
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmattburcke%2Fephemeral-os-caching%2Fmain%2Fvm-ephemeral.json)
 
 
-<br>
-<br>
 
 > 📢 **Latest:** This template leverages the new [Ephemeral OS Disk with Full Caching](https://techcommunity.microsoft.com/blog/AzureCompute/public-preview-ephemeral-os-disk-with-full-caching-for-vmvmss/4500191) feature announced March 30, 2026, providing **10X better IO performance** and sub-millisecond latency.
 
