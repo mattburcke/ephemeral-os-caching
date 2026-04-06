@@ -108,8 +108,13 @@ az deployment group create --resource-group <rg-name> --template-file vm-ephemer
 ```powershell
 $templateFile = "vm-ephemeral.json"
 $parameterFile = "vm-ephemeral.parameters.json"
-$resourceGroup = "<rg-name>"
-New-AzResourceGroupDeployment -ResourceGroupName $resourceGroup -TemplateFile $templateFile -TemplateParameterFile $parameterFile
+$resourceGroup = "rg-ephemeral"
+$adminPassword = Read-Host "Enter VM admin password" -AsSecureString
+New-AzResourceGroupDeployment `
+  -ResourceGroupName $resourceGroup `
+  -TemplateFile $templateFile `
+  -TemplateParameterFile $parameterFile `
+  -adminPassword $adminPassword
 ```
 
 **Option 3: Deploy to Azure Button**
