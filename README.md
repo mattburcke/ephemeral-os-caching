@@ -12,7 +12,6 @@ Deploy a Windows Server 2022 virtual machine with an ephemeral OS disk featuring
 ✅ **Asynchronous Caching** - No impact to VM creation times  
 ✅ **Azure Bastion Developer SKU** - Secure RDP/SSH access without public IP exposure  
 ✅ **No Public IP on VM** - Enhanced security posture  
-✅ **Flexible Placement** - Choose between CacheDisk or ResourceDisk for ephemeral storage  
 
 
 ## Architecture
